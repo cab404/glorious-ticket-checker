@@ -1,0 +1,13 @@
+<h1>load csv!</h1>
+this will process CSV, if you like.
+
+{% if message != None %}
+<h2>{{ message }}</h2>
+{% endif %}
+
+<form enctype="multipart/form-data" method="POST">
+    <label for="csv">Tickets list</label>
+    <input type="file" accept="text/csv" name="csv"/>
+    <input type="submit" value="load em!"/>
+    {% csrf_token %}
+</form>

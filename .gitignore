@@ -1,0 +1,7 @@
+__pycache__
+secrets.py
+runs
+.ipynb_*
+*.csv
+.direnv
+.vscode/.ropeproject

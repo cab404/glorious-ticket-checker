@@ -1,0 +1,31 @@
+<h1>glorious ticket checker</h1>
+<h4 style="rotate: 5deg; margin-top: -20pt; margin-left: 150pt; color: red; position: absolute;">this checks tickets™</h4>
+
+{% if user.is_authenticated %}
+
+<form method="POST" enctype="multipart/form-data">
+    <p>hello, {{ user.get_username }} || <button type="submit">logout</button></p>
+    {% csrf_token %}
+</form>
+
+<ul>
+    <li>
+        <a href="/admin">go to admin page to manage tickets and stuff</a>
+    </li>
+    <li>
+        <a href="/import_csv">bulk import tickets</a>
+    </li>
+</ul>
+
+you can also download a ticket checker 
+
+{% else %}
+
+<form method="POST" enctype="multipart/form-data" action="/login">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" name="log_in" value="Log in">
+    {% csrf_token %}
+</form>
+
+{% endif %}
