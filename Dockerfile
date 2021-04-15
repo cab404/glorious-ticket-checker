@@ -10,3 +10,4 @@ RUN pip install --no-cache-dir --upgrade pip \
  && pip uninstall --yes poetry
 
 COPY . ./
+CMD ./ticket_checker/manage.py runserver
