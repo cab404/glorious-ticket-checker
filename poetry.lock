@@ -65,6 +65,18 @@ argon2 = ["argon2-cffi (>=16.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-qr-code"
+version = "2.1.0"
+description = "An application that provides tools for displaying QR codes on your Django site."
+category = "main"
+optional = false
+python-versions = ">=3"
+
+[package.dependencies]
+django = ">=2.2"
+segno = "*"
+
+[[package]]
 name = "mypy"
 version = "0.812"
 description = "Optional static typing for Python"
@@ -124,6 +136,14 @@ python-versions = "*"
 dev = ["pytest"]
 
 [[package]]
+name = "segno"
+version = "1.3.3"
+description = "QR Code and Micro QR Code generator for Python 2 and Python 3"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.1"
 description = "A non-validating SQL parser."
@@ -158,7 +178,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "22586e2421597849498bb5de5b2bbfd059a61decaf219d9c7a3df7a23e29d31f"
+content-hash = "d5e55d78bf0b2292e0ae80e6213ac59491ce1a136863100ab2532c12dd857da5"
 
 [metadata.files]
 appdirs = [
@@ -179,6 +199,10 @@ click = [
 django = [
     {file = "Django-3.1.7-py3-none-any.whl", hash = "sha256:baf099db36ad31f970775d0be5587cc58a6256a6771a44eb795b554d45f211b8"},
     {file = "Django-3.1.7.tar.gz", hash = "sha256:32ce792ee9b6a0cbbec340123e229ac9f765dff8c2a4ae9247a14b2ba3a365a7"},
+]
+django-qr-code = [
+    {file = "django-qr-code-2.1.0.tar.gz", hash = "sha256:5fdd84f4c02127c262e6987bd1a9396a47f2b806be04aa0bebfcb786a9f6a0b7"},
+    {file = "django_qr_code-2.1.0-py3-none-any.whl", hash = "sha256:ff495d9628e3d02ad8581c3b3f17940008d6613c69ffdc5abb67e02f8159db6e"},
 ]
 mypy = [
     {file = "mypy-0.812-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:a26f8ec704e5a7423c8824d425086705e381b4f1dfdef6e3a1edab7ba174ec49"},
@@ -261,6 +285,10 @@ regex = [
 ]
 rope = [
     {file = "rope-0.18.0.tar.gz", hash = "sha256:786b5c38c530d4846aa68a42604f61b4e69a493390e3ca11b88df0fbfdc3ed04"},
+]
+segno = [
+    {file = "segno-1.3.3-py2.py3-none-any.whl", hash = "sha256:2052d1fec957eee652a3785fe7c00e76099eeb6b189723e98eb2829351a2cb30"},
+    {file = "segno-1.3.3.tar.gz", hash = "sha256:505766f18c935f606097dc02280aa9cd28f21b3395ebf33292999af9e9d8f138"},
 ]
 sqlparse = [
     {file = "sqlparse-0.4.1-py3-none-any.whl", hash = "sha256:017cde379adbd6a1f15a61873f43e8274179378e95ef3fede90b5aa64d304ed0"},
