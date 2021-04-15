@@ -71,7 +71,7 @@ def test_api(request: HttpRequest):
 def index(request: HttpRequest):
     
     ticket_count = Ticket.objects.count()
-    return render(request, "panel/index.html")
+    return render(request, "panel/index.html", {"server_name": request.get_host()})
 
 
 def intify(request: HttpRequest, someint: int):
