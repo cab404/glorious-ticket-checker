@@ -35,12 +35,15 @@ def import_csv(request: HttpRequest):
     else:
         loaded_file = request.FILES["csv"]
         reader = csv.DictReader(io.TextIOWrapper(loaded_file))
-        for line in reader:            
+        imported = 0
+        for line in reader:
+            imported += 1
             ticket = Ticket(
                 full_name = line["Name"], 
                 cost = line["Cost"], 
                 category = line["Category"], 
-                comments = line["Comment"] 
+                comments = line["Comment"],
+                order = None if line["Order"] == "" else line["Order"],
             )
             ticket.save()
             ModelAdmin.log_addition(
@@ -50,7 +53,8 @@ def import_csv(request: HttpRequest):
                 f"Created from CSV line {line}"
             )
         
-        return render(request, "panel/import_tickets.html", { "message": f"Success! Imported file of len {len(loaded_file)}" })
+        return render(request, "panel/import_tickets.html", { "message": f"Success! Imported {imported} tickets" })
+    
 
 @login_required
 def check_ticket():
