@@ -14,9 +14,10 @@ def download_stuff(modeladmin, request, queryset: QuerySet[Ticket]):
     mow = zipfile.ZipFile(bio, mode="x")
     for a in queryset:
         qr = qrmaker.make_qr_code_image(a.code, qr_code_options=qrmaker.QRCodeOptions(
-            size="H",
+            size="M",
             alignment_dark_color="#F00",
-            light_color="#FFFF"
+            light_color="#FFFF",
+            image_format="png"
         ))
         mow.writestr(f"{a.full_name}.png", qr)
     mow.close()
