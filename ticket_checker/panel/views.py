@@ -61,18 +61,7 @@ def check_ticket():
 
     pass
 
-
-def test_api(request: HttpRequest):
-    user = authenticate(request=request)
-    print(request.method)
-    return JsonResponse({ "a": 12, "b": [1,2,3], "headers": dict(request.headers.items()), "user": get_user(request).get_username() })
-
 # Create your views here.
-def index(request: HttpRequest):
-    
+def index(request: HttpRequest):    
     ticket_count = Ticket.objects.count()
     return render(request, "panel/index.html", {"server_name": request.get_host()})
-
-
-def intify(request: HttpRequest, someint: int):
-    return HttpResponse(f"{someint} is an int!")
