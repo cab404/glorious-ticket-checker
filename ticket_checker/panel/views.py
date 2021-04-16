@@ -6,6 +6,7 @@ from django.http.request import HttpRequest
 from django.contrib.auth import authenticate, get_user, login
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
 
 from django.contrib.admin.models import LogEntryManager, CHANGE, ContentType
 from django.contrib.admin.options import ModelAdmin
@@ -36,25 +37,26 @@ def import_csv(request: HttpRequest):
         loaded_file = request.FILES["csv"]
         reader = csv.DictReader(io.TextIOWrapper(loaded_file))
         imported = 0
-        for line in reader:
-            imported += 1
-            ticket = Ticket(
-                full_name = line["Name"], 
-                cost = line["Cost"], 
-                category = line["Category"], 
-                comments = line["Comment"],
-                order = None if line["Order"] == "" else line["Order"],
-            )
-            ticket.save()
-            ModelAdmin.log_addition(
-                None, 
-                request,
-                ticket,
-                f"Created from CSV line {line}"
-            )
-        
+        with transaction.atomic():
+            for line in reader:
+                imported += 1
+                ticket = Ticket(
+                    full_name = line["Name"],
+                    cost = line["Cost"],
+                    category = line["Category"],
+                    comments = line["Comment"],
+                    order = None if line["Order"] == "" else line["Order"],
+                )
+                ticket.save()
+                ModelAdmin.log_addition(
+                    None,
+                    request,
+                    ticket,
+                    f"Created from CSV line {line}"
+                )
+
         return render(request, "panel/import_tickets.html", { "message": f"Success! Imported {imported} tickets" })
-    
+
 
 @login_required
 def check_ticket():
