@@ -19,7 +19,8 @@ def download_stuff(modeladmin, request, queryset: QuerySet[Ticket]):
             light_color="#FFFF",
             image_format="png"
         ))
-        mow.writestr(f"{a.full_name}.png", qr)
+        fname = f"{str(a.full_name).strip()}-{str(a.code)[:5]}.png"
+        mow.writestr(fname, qr)
     mow.close()
     bio.seek(0)
     return FileResponse(bio, as_attachment=True, filename="mow.zip")
