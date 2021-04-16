@@ -7,7 +7,7 @@ class Ticket(models.Model):
     full_name = models.CharField("Full name", max_length=200)
     passes = models.IntegerField("Passes", default=0)
     category = models.CharField("Category", max_length=200)
-    order = models.IntegerField("Order", default=None, null=True)
+    order = models.IntegerField("Order", default=None, null=True, blank=True)
     # not really interested in having it saved
     cost = models.CharField("Cost", max_length=20, null=True)
     comments = models.TextField("Comments", max_length=2000, null=True, blank=True)
