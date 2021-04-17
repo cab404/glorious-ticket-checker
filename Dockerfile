@@ -11,7 +11,7 @@ WORKDIR /app
 
 COPY poetry.lock pyproject.toml ./
 RUN pip install --no-cache-dir --upgrade pip \
- && pip install --no-cache-dir poetry \
+ && pip install --no-cache-dir poetry psycopg2 \
  && poetry config virtualenvs.create false \
  && poetry install --no-dev \
  && pip uninstall --yes poetry
