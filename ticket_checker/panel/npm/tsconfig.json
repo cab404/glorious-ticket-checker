@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es6", "DOM"
+        ],
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strict": true,
+        "noEmit": true,
+        "allowJs": true
+    }
+}

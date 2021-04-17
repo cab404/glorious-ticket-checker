@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, Http404
 from django.http.request import HttpRequest
 
 from django.contrib.auth import authenticate, get_user, login, logout
@@ -10,6 +9,8 @@ from django.db import transaction
 
 from django.contrib.admin.models import LogEntryManager, CHANGE, ContentType
 from django.contrib.admin.options import ModelAdmin
+
+import uuid
 
 from .models import Ticket
 import csv
@@ -57,14 +58,27 @@ def import_csv(request: HttpRequest):
 
         return render(request, "panel/import_tickets.html", { "message": f"Success! Imported {imported} tickets" })
 
+@login_required
+def ticket_checker(request: HttpRequest):
+    return render(request, "panel/checker.html")
 
 @login_required
-def check_ticket():
-
-    pass
+def check_ticket(request: HttpRequest, ticket_uuid: uuid.uuid4):
+    ticket = Ticket.objects.get(code = ticket_uuid)
+    if ticket is None:
+        return Http404()
+    ticket.passes += 1
+    ticket.save()
+    return JsonResponse({
+        "order": ticket.order,
+        "passes": ticket.passes,
+        "comments": ticket.comments,
+        "category": ticket.category,
+        "full_name": ticket.full_name
+    })
 
 # Create your views here.
-def index(request: HttpRequest):    
+def index(request: HttpRequest):
     if request.POST and request.POST["action"] == "logout":
         logout(request)
     return render(request, "panel/index.html", {"server_name": request.get_host()})

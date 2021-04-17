@@ -11,7 +11,7 @@
 
         devShell = pkgs.mkShell {
             buildInputs = with pkgs; [
-                python3Packages.poetry
+                python3Packages.poetry yarn
             ] ++ self.defaultPackage.${system}.buildInputs;
         };
 
