@@ -4,7 +4,7 @@
 {% if user.is_authenticated %}
 
 <form method="POST" enctype="multipart/form-data">
-    <p>hello, {{ user.get_username }} || <button type="submit">logout</button></p>
+    <p>hello, {{ user.get_username }} || <button type="submit" name="action" value="logout">logout</button></p>
     {% csrf_token %}
 </form>
 

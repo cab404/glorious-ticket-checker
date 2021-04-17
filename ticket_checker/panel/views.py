@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse, HttpResponseRedirect
 from django.http.request import HttpRequest
 
-from django.contrib.auth import authenticate, get_user, login
+from django.contrib.auth import authenticate, get_user, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
@@ -65,5 +65,6 @@ def check_ticket():
 
 # Create your views here.
 def index(request: HttpRequest):    
-    ticket_count = Ticket.objects.count()
+    if request.POST and request.POST["action"] == "logout":
+        logout(request)
     return render(request, "panel/index.html", {"server_name": request.get_host()})
