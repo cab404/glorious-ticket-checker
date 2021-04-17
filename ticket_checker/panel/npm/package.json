@@ -4,7 +4,9 @@
   "description": "qr code checker module for Glorious Ticket Checkertm",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c --format iife",
+    "watch": "rollup -c --format iife --watch"
   },
   "author": "cab",
   "license": "AGPL-3.0",
