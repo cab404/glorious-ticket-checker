@@ -1,9 +1,6 @@
 <h1>glorious ticket checker</h1>
 <h4 style="rotate: 5deg; margin-top: -20pt; margin-left: 150pt; color: red; position: absolute;">this checks tickets™</h4>
 
-{% load qr_code %}
-{% qr_from_text server_name size="H" %}
-
 {% if user.is_authenticated %}
 
 <form method="POST" enctype="multipart/form-data">
