@@ -11,6 +11,7 @@ class Ticket(models.Model):
     # not really interested in having it saved
     cost = models.CharField("Cost", max_length=20, null=True)
     comments = models.TextField("Comments", max_length=2000, null=True, blank=True)
+    email = models.EmailField("E-mail", null=True, blank=True)
 
     def __str__(self):
         return f"{self.full_name} (passed {self.passes} times)"

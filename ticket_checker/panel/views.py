@@ -47,6 +47,7 @@ def import_csv(request: HttpRequest):
                     category = line["Category"],
                     comments = line["Comment"],
                     order = None if line["Order"] == "" else line["Order"],
+                    email = None if line["E-mail"] == "" else line["E-mail"],
                 )
                 ticket.save()
                 ModelAdmin.log_addition(
