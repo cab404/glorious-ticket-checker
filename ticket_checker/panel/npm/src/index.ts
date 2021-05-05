@@ -46,12 +46,18 @@ function new_code(code: string) {
                 </h3>
 
                 <h3>Passed: ${resp.passes} times</h3>
-                
+
                 ${(resp.comments as string) != "" ? `
                 <h3>${resp.comments}</h3>
                 ` : `
                 <i>No comments for you.<i>
                 `}
+            `
+        })
+        .catch(err => {
+            title.innerHTML = `
+                <h1> ticket not found! </h1>
+                <pre>${code}</pre>
             `
         })
 

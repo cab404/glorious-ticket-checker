@@ -1,15 +1,16 @@
 {%load static%}
 <!DOCTYPE html>
 <html>
-
+    <head>
+        <meta name="viewport" content="width=1024, initial-scale=1">
+    </head>
     <body>
         <div style="display: flex; flex-direction: column; align-items: center;">
             <div style="display: flex; flex-direction: column; max-width: 700pt;">
-                <video height="333px" id="scanner" style="flex: content;"></video>    
+                <video id="scanner" style="flex: content;"></video>
                 <p id="ticket-code"></p>
             </div>
         </div>
-        
     </body>
 
     <script>globalThis.qrworker="{% static 'panel/qr-scanner-worker.min.js' %}"</script>
