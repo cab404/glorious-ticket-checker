@@ -37,6 +37,7 @@ download_stuff.short_description = _("Download those tickets!")
 
 
 def send_emails(modeladmin, request, queryset: QuerySet[Ticket]):
+    queryset = queryset.filter(email__isnull=False)
     conn = mail_sender(fail_silently=False)
 
     def form_mail(ticket):
@@ -68,7 +69,7 @@ def send_emails(modeladmin, request, queryset: QuerySet[Ticket]):
         )
         return mail
 
-    mail_sender(fail_silently=False).send_messages(
+    conn.send_messages(
         [form_mail(ticket) for ticket in queryset]
     )
 
@@ -83,12 +84,14 @@ class TicketAdmin(admin.ModelAdmin):
         "cost",
         "passes",
         "order",
+        "email",
     )
     search_fields = (
         "full_name",
         "comments",
+        "email",
     )
-    list_filter = ("category",)
+    list_filter = ("category", )
     actions = [admin.actions.delete_selected, send_emails, download_stuff]
 
 
