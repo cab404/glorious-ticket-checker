@@ -15,6 +15,7 @@ import uuid
 from .models import Ticket
 import csv
 import io
+from django.core.validators import EmailValidator
 
 # Login
 # Import CSV
@@ -41,13 +42,15 @@ def import_csv(request: HttpRequest):
         with transaction.atomic():
             for line in reader:
                 imported += 1
+                email = None if line["E-mail"] == "" else line["E-mail"].strip()
+                EmailValidator(f"Problem with email on line {imported} {line} ")(email)
                 ticket = Ticket(
                     full_name = line["Name"],
                     cost = line["Cost"],
                     category = line["Category"],
                     comments = line["Comment"],
                     order = None if line["Order"] == "" else line["Order"],
-                    email = None if line["E-mail"] == "" else line["E-mail"],
+                    email = email,
                 )
                 ticket.save()
                 ModelAdmin.log_addition(
