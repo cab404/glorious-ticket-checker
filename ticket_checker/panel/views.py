@@ -16,6 +16,7 @@ from .models import Ticket
 import csv
 import io
 from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
 
 # Login
 # Import CSV
@@ -39,27 +40,31 @@ def import_csv(request: HttpRequest):
         loaded_file = request.FILES["csv"]
         reader = csv.DictReader(io.TextIOWrapper(loaded_file))
         imported = 0
-        with transaction.atomic():
-            for line in reader:
-                imported += 1
-                email = None if line["E-mail"] == "" else line["E-mail"].strip()
-                EmailValidator(f"Problem with email on line {imported} {line} ")(email)
-                ticket = Ticket(
-                    full_name = line["Name"],
-                    cost = line["Cost"],
-                    category = line["Category"],
-                    comments = line["Comment"],
-                    order = None if line["Order"] == "" else line["Order"],
-                    email = email,
-                )
-                ticket.save()
-                ModelAdmin.log_addition(
-                    None,
-                    request,
-                    ticket,
-                    f"Created from CSV line {line}"
-                )
+        try:
+            with transaction.atomic():
+                for line in reader:
+                    imported += 1
+                    email = None if line["E-mail"] == "" else line["E-mail"].strip()
 
+                    EmailValidator(f"Problem with email on line {imported} {line} ")(email)
+
+                    ticket = Ticket(
+                        full_name = line["Name"],
+                        cost = line["Cost"],
+                        category = line["Category"],
+                        comments = line["Comment"],
+                        order = None if line["Order"] == "" else line["Order"],
+                        email = email,
+                    )
+                    ticket.save()
+                    ModelAdmin.log_addition(
+                        None,
+                        request,
+                        ticket,
+                        f"Created from CSV line {line}"
+                    )
+        except ValidationError as e:
+            return render(request, "panel/import_tickets.html", { "message": f"Error! {e}" })
         return render(request, "panel/import_tickets.html", { "message": f"Success! Imported {imported} tickets" })
 
 @login_required
