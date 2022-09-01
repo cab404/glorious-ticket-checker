@@ -5,3 +5,4 @@ runs
 *.csv
 .direnv
 .vscode/.ropeproject
+node_modules
