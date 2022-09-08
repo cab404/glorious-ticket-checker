@@ -37,6 +37,37 @@
             };
           };
 
+          frontend = with pkgs; let
+            pname = "frontend";
+            version = "0";
+          in
+          mkYarnPackage {
+            src = ./ticket_checker/panel/npm;
+
+            packageJSON = ./ticket_checker/panel/npm/package.json;
+            yarnLock = ./ticket_checker/panel/npm/yarn.lock;
+
+            buildPhase = ''
+              runHook preBuild
+
+              yarn build --offline
+
+              runHook postBuild
+            '';
+
+            installPhase = ''
+              runHook preInstall
+
+              mkdir -p $out/panel
+              cp -R deps/checker/bundle.js $out/panel
+              cp $node_modules/qr-scanner/qr-scanner-worker.min.js $out/panel
+
+              runHook postInstall
+            '';
+
+            doDist = false;
+          };
+
           gtchServer = with pkgs; with python3Packages; let
               pname = "gtch";
               version = "0";
@@ -49,12 +80,15 @@
                 propagatedBuildInputs = [
                     django
                     django-qr-code
+                    frontend
                 ];
 
                 installPhase = ''
                   cp -dr --no-preserve='ownership' . $out/
                   wrapProgram $out/manage.py \
                     --prefix PYTHONPATH : "$PYTHONPATH:$out/thirdpart:"
+
+                  cp -R ${frontend} $out/panel/static
                 '';
 
             };
