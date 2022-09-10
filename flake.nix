@@ -44,9 +44,6 @@
           mkYarnPackage {
             src = ./ticket_checker/panel/npm;
 
-            packageJSON = ./ticket_checker/panel/npm/package.json;
-            yarnLock = ./ticket_checker/panel/npm/yarn.lock;
-
             buildPhase = ''
               runHook preBuild
 
@@ -77,10 +74,11 @@
                 src = ./ticket_checker;
                 buildInputs = [ makeWrapper ];
 
+                inherit frontend;
+
                 propagatedBuildInputs = [
                     django
                     django-qr-code
-                    frontend
                 ];
 
                 installPhase = ''
@@ -88,7 +86,7 @@
                   wrapProgram $out/manage.py \
                     --prefix PYTHONPATH : "$PYTHONPATH:$out/thirdpart:"
 
-                  cp -R ${frontend} $out/panel/static
+                  cp -R $frontend $out/panel/static
                 '';
 
             };
@@ -96,12 +94,10 @@
         in
         {
 
-
           devShell = pkgs.mkShell {
             buildInputs = with pkgs; [
               yarn
               nixpkgs-fmt
-              gtchServer
               (python3.withPackages (s: with s; [
                 django-qr-code
                 ipython
@@ -110,7 +106,10 @@
             ];
           };
 
-          packages.default = gtchServer;
+          packages = {
+            default = gtchServer;
+            inherit frontend;
+          };
 
         };
     in
