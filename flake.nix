@@ -37,6 +37,34 @@
             };
           };
 
+          frontend = with pkgs; let
+            pname = "frontend";
+            version = "0";
+          in
+          mkYarnPackage {
+            src = ./ticket_checker/panel/npm;
+
+            buildPhase = ''
+              runHook preBuild
+
+              yarn build --offline
+
+              runHook postBuild
+            '';
+
+            installPhase = ''
+              runHook preInstall
+
+              mkdir -p $out/panel
+              cp -R deps/checker/bundle.js $out/panel
+              cp $node_modules/qr-scanner/qr-scanner-worker.min.js $out/panel
+
+              runHook postInstall
+            '';
+
+            doDist = false;
+          };
+
           gtchServer = with pkgs; with python3Packages; let
               pname = "gtch";
               version = "0";
@@ -45,6 +73,8 @@
                 inherit pname version;
                 src = ./ticket_checker;
                 buildInputs = [ makeWrapper ];
+
+                inherit frontend;
 
                 propagatedBuildInputs = [
                     django
@@ -55,6 +85,8 @@
                   cp -dr --no-preserve='ownership' . $out/
                   wrapProgram $out/manage.py \
                     --prefix PYTHONPATH : "$PYTHONPATH:$out/thirdpart:"
+
+                  cp -R $frontend $out/panel/static
                 '';
 
             };
@@ -62,12 +94,10 @@
         in
         {
 
-
           devShell = pkgs.mkShell {
             buildInputs = with pkgs; [
               yarn
               nixpkgs-fmt
-              gtchServer
               (python3.withPackages (s: with s; [
                 django-qr-code
                 ipython
@@ -76,7 +106,10 @@
             ];
           };
 
-          packages.default = gtchServer;
+          packages = {
+            default = gtchServer;
+            inherit frontend;
+          };
 
         };
     in
