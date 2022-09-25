@@ -111,6 +111,7 @@
             inherit frontend;
           };
 
+          nixosModules.default = builtins.scopedImport { inherit gtchServer; } ./module.nix;
         };
     in
     with utils.lib; eachSystem defaultSystems out;
