@@ -66,30 +66,30 @@
           };
 
           gtchServer = with pkgs; with python3Packages; let
-              pname = "gtch";
-              version = "0";
+            pname = "gtch";
+            version = "0";
           in
-            buildPythonPackage {
-                inherit pname version;
-                src = ./ticket_checker;
-                buildInputs = [ makeWrapper ];
+          buildPythonPackage {
+            inherit pname version;
+            src = ./ticket_checker;
+            buildInputs = [ makeWrapper ];
 
-                inherit frontend;
+            inherit frontend;
 
-                propagatedBuildInputs = [
-                    django
-                    django-qr-code
-                ];
+            propagatedBuildInputs = [
+              django
+              django-qr-code
+            ];
 
-                installPhase = ''
-                  cp -dr --no-preserve='ownership' . $out/
-                  wrapProgram $out/manage.py \
-                    --prefix PYTHONPATH : "$PYTHONPATH:$out/thirdpart:"
+            installPhase = ''
+              cp -dr --no-preserve='ownership' . $out/
+              wrapProgram $out/manage.py \
+                --prefix PYTHONPATH : "$PYTHONPATH:$out/thirdpart:"
 
-                  cp -R $frontend $out/panel/static
-                '';
+              cp -R $frontend $out/panel/static
+            '';
 
-            };
+          };
 
         in
         {
@@ -110,10 +110,10 @@
             default = gtchServer;
             inherit frontend;
           };
-
-          nixosModules.default = builtins.scopedImport { inherit gtchServer; } ./module.nix;
         };
     in
-    with utils.lib; eachSystem defaultSystems out;
+    with utils.lib; eachSystem defaultSystems out // {
+      nixosModules.default = import ./module.nix self;
+    };
 
 }

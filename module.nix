@@ -1,7 +1,7 @@
-{ config, lib, pkgs, ... }: with lib;
+input: { config, lib, pkgs, ... }: with lib;
 let
   name = "gtchServer";
-  pkg = gtchServer;
+  pkg = input.packages."${pkgs.system}".default;
   cfg = config.services.${name};
 
   webSettings = {
