@@ -6,8 +6,8 @@ let
 
   webSettings = {
     BASE_DIR = cfg.dataDir;
-    STATIC_URL = cfg.dataDir + "/static/";
-    STATIC_ROOT = cfg.dataDir + "/static/";
+    STATIC_URL = "${cfg.dataDir}/static/";
+    STATIC_ROOT = "${cfg.dataDir}/static/";
     DATABASES.default = {
       ENGINE = "django.db.backends.sqlite3";
       NAME = "${cfg.dataDir}/db.sqlite3";
@@ -34,48 +34,48 @@ let
   '');
 in
 {
-  options.services.${name} = {
+  options.services.${name} = with types; {
 
     enable = mkEnableOption name;
 
     listenAddress = mkOption {
-      type = types.str;
+      type = str;
       default = "0.0.0.0";
       description = "Address the server will listen on.";
     };
 
     port = mkOption {
-      type = types.port;
+      type = port;
       default = 8000;
       description = "Port the server will listen on.";
     };
 
     dataDir = mkOption {
-      type = types.str;
+      type = str;
       default = "/var/lib/${name}";
       description = "Directory to store ${name} database and other state/data files.";
     };
 
     user = mkOption {
       default = name;
-      type = types.str;
+      type = str;
       description = "User account under which ${name} runs.";
     };
 
     group = mkOption {
       default = name;
-      type = types.str;
+      type = str;
       description = "Group account under which ${name} runs.";
     };
 
     webSettings = mkOption {
-      type = types.attrs;
+      type = attrs;
       default = { };
       description = "Overrides for the default ${name} Django settings.";
     };
 
     environment = mkOption {
-      type = types.attrs;
+      type = attrs;
       default = { };
       description = "Defines environment variables.";
     };
@@ -86,7 +86,7 @@ in
 
     users.users.${cfg.user} = {
       description = "${name} service owner.";
-      group = cfg.user;
+      group = cfg.group;
       isSystemUser = true;
       home = cfg.dataDir;
       createHome = true;
