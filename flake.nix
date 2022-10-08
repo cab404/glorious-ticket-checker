@@ -56,7 +56,7 @@
               runHook preInstall
 
               mkdir -p $out/panel
-              cp -R deps/checker/bundle.js $out/panel
+              cp deps/static/panel/bundle.js $out/panel
               cp $node_modules/qr-scanner/qr-scanner-worker.min.js $out/panel
 
               runHook postInstall

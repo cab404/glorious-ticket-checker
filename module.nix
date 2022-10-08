@@ -52,8 +52,9 @@ in
 
     dataDir = mkOption {
       type = str;
-      default = "/var/lib/${name}";
-      description = "Directory to store ${name} database and other state/data files.";
+      default = "${name}";
+      apply = (o: "/var/lib/" + o);
+      description = "${name} state directory will be created by systemd in /var/lib.";
     };
 
     user = mkOption {
@@ -88,8 +89,6 @@ in
       description = "${name} service owner.";
       group = cfg.group;
       isSystemUser = true;
-      home = cfg.dataDir;
-      createHome = true;
     };
 
     users.groups.${cfg.group} = { };
@@ -113,7 +112,7 @@ in
           ${pkg}/manage.py runserver ${cfg.listenAddress}:${toString cfg.port}
         '';
 
-        WorkingDirectory = cfg.dataDir;
+        StateDirectory = removePrefix "/var/lib/" cfg.dataDir;
       };
     };
   };
