@@ -1,12 +1,12 @@
 input: { config, lib, pkgs, ... }: with lib;
 let
-  name = "gtchServer";
+  name = "gtch";
   pkg = input.packages."${pkgs.system}".default;
   cfg = config.services.${name};
 
   webSettings = {
     BASE_DIR = cfg.dataDir;
-    STATIC_URL = "${cfg.dataDir}/static/";
+    STATIC_URL = "/static/";
     STATIC_ROOT = "${cfg.dataDir}/static/";
     DATABASES.default = {
       ENGINE = "django.db.backends.sqlite3";
