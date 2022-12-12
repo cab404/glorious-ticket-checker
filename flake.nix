@@ -81,6 +81,8 @@
               django-qr-code
             ];
 
+            format = "other";
+
             installPhase = ''
               cp -dr --no-preserve='ownership' . $out/
               wrapProgram $out/manage.py \
