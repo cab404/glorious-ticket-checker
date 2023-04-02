@@ -2,12 +2,14 @@ input: { config, lib, pkgs, ... }: with lib;
 let
   name = "gtch";
   pkg = input.packages."${pkgs.system}".default;
+  staticFiles = input.packages."${pkgs.system}".static;
   cfg = config.services.${name};
 
   webSettings = {
+    DEBUG = false;
     BASE_DIR = cfg.dataDir;
-    STATIC_URL = "/static/";
-    STATIC_ROOT = "${cfg.dataDir}/static/";
+    STATIC_URL = staticFiles;
+    STATIC_ROOT = "/";
     DATABASES.default = {
       ENGINE = "django.db.backends.sqlite3";
       NAME = "${cfg.dataDir}/db.sqlite3";
@@ -99,7 +101,6 @@ in
 
       preStart = ''
         ${pkg}/manage.py migrate --noinput
-        ${pkg}/manage.py collectstatic --noinput
       '';
 
       serviceConfig = {

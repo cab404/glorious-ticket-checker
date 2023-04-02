@@ -17,13 +17,13 @@ function start_qr(elem: HTMLVideoElement) {
       console.log(decoded);
     },
     undefined,
-    300,
+    undefined,
     "environment"
   );
 
-  elem.ondblclick = (ev) => {
+  elem.addEventListener("auxclick", (ev) => {
     scanner.toggleFlash();
-  };
+  })
 
   scanner.start().then(() => {
     section(null);

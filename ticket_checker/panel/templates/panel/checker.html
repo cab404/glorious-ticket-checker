@@ -2,23 +2,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=1024, initial-scale=1">
+        <meta name="viewport" content="initial-scale=1">
         <style>
             * {
                 font-family: sans-serif;
             }
+            #scanner {
+                max-height: 400px;
+            }
             @media (prefers-color-scheme: dark) {
-                * {
+                body {
                     background-color: black;
+                }
+                * {
                     color: aliceblue;
                 }
             }
         </style>
     </head>
     <body>
-        <div style="display: flex; flex-direction: column; align-items: center;">
-            <div style="display: flex; flex-direction: column; max-width: 700pt;">
-                <video id="scanner" style="flex: content;"></video>
+        <div id="root" style="display: flex; flex-direction: column; align-items: center;">
+                <video id="scanner"></video>
                 <div id="ticket-progress">
                     <h1 id="ticket-progress-state">Loading core…</h1>
                     <progress></progress>
@@ -39,7 +43,7 @@
                     <h1 id="ticket-error-title"></h1>
                     <h3 id="ticket-error-text"></h3>
                 </div>
-            </div>
+            <!-- </div> -->
         </div>
     </body>
 

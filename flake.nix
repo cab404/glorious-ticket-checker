@@ -92,6 +92,14 @@
             '';
 
           };
+          static = with pkgs; runCommand "static" {
+            inherit frontend gtchServer;
+          } ''
+            mkdir -p $out
+            export STATIC_ROOT=$out
+            $gtchServer/manage.py collectstatic
+          '';
+
 
         in
         {
@@ -110,7 +118,7 @@
 
           packages = {
             default = gtchServer;
-            inherit frontend;
+            inherit static;
           };
         };
     in
