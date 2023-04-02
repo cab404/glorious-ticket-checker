@@ -6,3 +6,4 @@ runs
 .direnv
 .vscode/.ropeproject
 node_modules
+result
