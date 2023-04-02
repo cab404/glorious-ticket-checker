@@ -3,12 +3,42 @@
 <html>
     <head>
         <meta name="viewport" content="width=1024, initial-scale=1">
+        <style>
+            * {
+                font-family: sans-serif;
+            }
+            @media (prefers-color-scheme: dark) {
+                * {
+                    background-color: black;
+                    color: aliceblue;
+                }
+            }
+        </style>
     </head>
     <body>
         <div style="display: flex; flex-direction: column; align-items: center;">
             <div style="display: flex; flex-direction: column; max-width: 700pt;">
                 <video id="scanner" style="flex: content;"></video>
-                <p id="ticket-code"></p>
+                <div id="ticket-progress">
+                    <h1 id="ticket-progress-state">Loading core…</h1>
+                    <progress></progress>
+                </div>
+                
+                <div id="ticket-info" style="visibility: collapse;">
+                    <h1 id="ticket-name"></h1>
+                    <table>
+                        <tr><td id="ticket-info-title">Email:</td><td id="ticket-email"></td></tr>
+                        <tr><td id="ticket-info-title">Order:</td><td id="ticket-order"></td></tr>
+                        <tr><td id="ticket-info-title">Passes:</td><td id="ticket-passes"></td></tr>
+                        <tr><td id="ticket-info-title">Cost:</td><td id="ticket-cost"></td></tr>
+                        <tr><td id="ticket-info-title">Category:</td><td id="ticket-category"></td></tr>
+                        <tr><td id="ticket-info-title">Comments:</td><td id="ticket-comments"></td></tr>
+                    </table>
+                </div>
+                <div id="ticket-error" style="visibility: gone;">
+                    <h1 id="ticket-error-title"></h1>
+                    <h3 id="ticket-error-text"></h3>
+                </div>
             </div>
         </div>
     </body>

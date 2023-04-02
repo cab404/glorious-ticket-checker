@@ -72,15 +72,21 @@ def ticket_checker(request: HttpRequest):
     return render(request, "panel/checker.html")
 
 @login_required
+def quick_reject_ticket(request: HttpRequest, something: str):
+    return JsonResponse({"error": "That's really not a ticket"})
+
+@login_required
 def check_ticket(request: HttpRequest, ticket_uuid: uuid.uuid4):
-    ticket = Ticket.objects.get(code = ticket_uuid)
+    ticket = Ticket.objects.filter(code = ticket_uuid).first()
     if ticket is None:
-        return Http404()
+        return JsonResponse({"error": "Ticket not found"})
     ticket.passes += 1
     ticket.save()
     return JsonResponse({
+        "cost": ticket.cost,
         "order": ticket.order,
         "passes": ticket.passes,
+        "email": ticket.email,
         "comments": ticket.comments,
         "category": ticket.category,
         "full_name": ticket.full_name
