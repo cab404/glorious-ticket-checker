@@ -19,12 +19,16 @@ let
   webSettingsJSON = pkgs.writeText "${name}-settings.json" (builtins.toJSON webSettings);
 
   environment = {
-    SETTINGS_JSON = webSettingsJSON;
+    SETTINGS_JSON = builtins.concatStringsSep ":" (
+      [ webSettingsJSON ] ++ 
+      (if (cfg.webSettingsFile == null) then [] else [ cfg.webSettingsFile ])
+      );
   } // cfg.environment;
 
   environmentFile = pkgs.writeText "${name}-env" (generators.toKeyValue { } environment);
 
   manageScript = with pkgs; (writeShellScriptBin "${name}-manage" ''
+    
     export $(cat ${environmentFile} | xargs);
 
     sudo=""
@@ -74,7 +78,13 @@ in
     webSettings = mkOption {
       type = attrs;
       default = { };
-      description = "Overrides for the default ${name} Django settings.";
+      description = "Overrides for the default ${name} Django settings. Do not store secure settings here!";
+    };
+
+    webSettingsFile = mkOption {
+      type = nullOr path;
+      default = { };
+      description = "Overrides for the default ${name} Django settings. Takes precedence over `webSettings`";
     };
 
     environment = mkOption {

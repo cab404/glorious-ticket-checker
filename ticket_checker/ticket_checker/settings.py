@@ -126,5 +126,6 @@ STATIC_ROOT = os.environ.get("STATIC_ROOT") or '/static/'
 
 # Interface for overriding settings
 if os.getenv("SETTINGS_JSON"):
-    with open(os.getenv("SETTINGS_JSON")) as f:
-        globals().update(json.load(f))
+    for overlay in os.getenv("SETTINGS_JSON").split(":"):
+        with open(overlay) as f:
+            globals().update(json.load(f))
